@@ -1368,7 +1368,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex)
     // On testnet it is enabled as of februari 20, 2012, 0:00 UTC.
     //
     // When should this happen in i0coin? Not yet...
-    if (pindex->nTime > 0x7fffffffffffffff)
+    if (false /*pindex->nTime > 0x7fffffffffffffff*/)
         BOOST_FOREACH(CTransaction& tx, vtx)
         {
             CTxIndex txindexOld;

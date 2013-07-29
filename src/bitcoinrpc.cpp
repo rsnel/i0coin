@@ -2221,6 +2221,8 @@ Value getauxblock(const Array& params, bool fHelp)
 
             // Create new block with nonce = 0 and extraNonce = 1
             pblock = CreateNewBlock(reservekey);
+            if (!pblock)
+                throw JSONRPCError(-7, "Out of memory");
 
             // Update nTime
             pblock->nTime = max(pindexPrev->GetMedianTimePast()+1, GetAdjustedTime());
@@ -2236,8 +2238,6 @@ Value getauxblock(const Array& params, bool fHelp)
             // Save
             mapNewBlock[pblock->GetHash()] = pblock;
 
-            if (!pblock)
-                throw JSONRPCError(-7, "Out of memory");
             vNewBlock.push_back(pblock);
         }
 

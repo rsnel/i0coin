@@ -21,6 +21,9 @@
 #include <miniupnpc/upnperrors.h>
 #endif
 
+// Dump addresses to peers.dat every 15 minutes (900s)
+#define DUMP_ADDRESSES_INTERVAL 900
+
 using namespace std;
 using namespace boost;
 
@@ -1240,10 +1243,12 @@ void ThreadDNSAddressSeed()
 
 
 
+// IP address encoded in unsigned int, port is default port (7333)
 unsigned int pnSeed[] =
 {
-    0x74B347CE,
-    0x58CEA445
+    0xC69A3C3D, // 198.154.60.61
+    0x5511F8D3, // 85.17.248.211
+    0xBCA5D83B, // 188.165.216.59
 };
 
 void DumpAddresses()
@@ -1778,7 +1783,7 @@ void StartNode(boost::thread_group& threadGroup)
     threadGroup.create_thread(boost::bind(&TraceThread<void (*)()>, "msghand", &ThreadMessageHandler));
 
     // Dump network addresses
-    threadGroup.create_thread(boost::bind(&LoopForever<void (*)()>, "dumpaddr", &DumpAddresses, 10000));
+    threadGroup.create_thread(boost::bind(&LoopForever<void (*)()>, "dumpaddr", &DumpAddresses, DUMP_ADDRESSES_INTERVAL * 1000));
 }
 
 bool StopNode()
